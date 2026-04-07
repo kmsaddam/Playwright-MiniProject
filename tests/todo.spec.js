@@ -1,0 +1,37 @@
+import { test, expect } from '@playwright/test';
+
+test('test', async ({ page }) => {
+  await page.goto('https://todomvc.com/examples/react/dist/');
+  await page.getByTestId('text-input').click();
+  await page.getByTestId('text-input').fill('Buy Grocery');
+  await page.getByTestId('text-input').press('Enter');
+  await page.getByTestId('text-input').click();
+  await page.getByTestId('text-input').fill('Pay Bills');
+  await page.getByTestId('text-input').press('Enter');
+  await page.getByTestId('text-input').click();
+  await page.getByTestId('text-input').fill('Go For Walk');
+  await page.getByTestId('text-input').press('Enter');
+  await page.getByTestId('text-input').fill('Play');
+  await page.getByTestId('text-input').press('Enter');
+  await page.getByTestId('text-input').fill('Rest');
+  await page.getByTestId('text-input').press('Enter');
+  await page.getByRole('listitem').filter({ hasText: 'Pay Bills' }).getByTestId('todo-item-toggle').check();
+  await page.getByRole('listitem').filter({ hasText: 'Rest' }).getByTestId('todo-item-toggle').check();
+  await page.getByRole('link', { name: 'Completed' }).click();
+  await page.getByRole('link', { name: 'Active' }).click();
+  await page.getByText('Go For Walk').click();
+  await page.getByText('Buy Grocery').click();
+  await page.getByText('Go For Walk').click();
+  await expect(page.getByTestId('todo-list')).toContainText('Go For Walk at Evening');
+  await page.locator('html').click();
+  await page.getByRole('link', { name: 'All' }).click();
+  await page.getByRole('link', { name: 'Completed' }).click();
+  await page.getByTestId('footer').click();
+  await expect(page.getByRole('listitem').filter({ hasText: 'Buy Grocery' }).getByTestId('todo-item-toggle')).not.toBeChecked();
+  await expect(page.getByRole('listitem').filter({ hasText: 'Buy Grocery' }).getByTestId('todo-item-toggle')).not.toBeChecked();
+  await page.getByRole('link', { name: 'Completed' }).click();
+  await page.getByRole('link', { name: 'All' }).click();
+  await page.getByRole('button', { name: 'Clear completed' }).click();
+  await page.getByRole('link', { name: 'Completed' }).click();
+  await page.getByRole('link', { name: 'Active' }).click();
+});
